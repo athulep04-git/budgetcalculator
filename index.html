@@ -1,11 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Calculator - Home</title>
+  <link rel="shortcut icon" href="https://static.vecteezy.com/system/resources/previews/011/107/367/original/wallet-3d-icon-illustration-png.png" type="image/x-icon">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    
+<body class="min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('https://cdn.pixabay.com/photo/2017/02/18/17/03/light-background-2077664_1280.jpg');">
+  
+  <nav class="fixed top-0 left-0 w-full bg-blue-600 shadow-md px-8 py-4 flex justify-between items-center z-50">
+    <div class="flex items-center space-x-2">
+      <img src="https://www.pngmart.com/files/8/Wallet-PNG-Transparent-File.png" class="h-6">
+      <span class="text-2xl font-bold text-white">Budget Calculator</span>
+    </div>
+    <div class="space-x-4">
+      <a href="login.html" class="bg-white px-4 py-2 text-blue-600 font-bold rounded-lg hover:bg-gray-100">Login</a>
+      <a href="register.html" class="bg-white px-4 py-2 text-blue-600 font-bold rounded-lg hover:bg-gray-100">Register</a>
+    </div>
+  </nav>
+
+  <section class="flex flex-col justify-center items-center text-center pt-40 px-6">
+    <h1 class="text-4xl md:text-5xl font-bold text-blue-700 mb-4">Take Control of Your Finances</h1>
+    <p class="text-gray-700 max-w-xl mb-6">
+      Our Budget Calculator helps you track expenses, set financial goals, and manage your savings with ease. 
+      Plan smarter, save more, and stress less.
+    </p>
+    <div class="space-x-4">
+      <a href="login.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">Get Started</a>
+      <a href="register.html" class="bg-white border border-blue-600 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition">Create Account</a>
+    </div>
+  </section>
+
+    <section class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mt-20 px-6">
+    <div class="bg-white/90 rounded-lg shadow-lg p-6 border text-center transition-transform duration-500 ease-in-out hover:scale-105"
+    data-aos="flip-left"
+         data-aos-easing="ease-out-cubic"
+         data-aos-duration="2000"
+         data-aos-delay="0">
+      <h2 class="text-xl font-bold text-blue-700 mb-2">Track Expenses</h2>
+      <p class="text-gray-600">Easily log daily expenses and visualize where your money goes.</p>
+    </div>
+    <div class="bg-white/90 rounded-lg shadow-lg p-6 border text-center transition-transform duration-500 ease-in-out hover:scale-105"
+    data-aos="flip-left"
+         data-aos-easing="ease-out-cubic"
+         data-aos-duration="2000"
+         data-aos-delay="0">      <h2 class="text-xl font-bold text-blue-700 mb-2">Set Goals</h2>
+      <p class="text-gray-600">Plan savings goals and stay motivated with progress tracking.</p>
+    </div>
+    <div class="bg-white/90 rounded-lg shadow-lg p-6 border text-center transition-transform duration-500 ease-in-out hover:scale-105"
+    data-aos="flip-left"
+         data-aos-easing="ease-out-cubic"
+         data-aos-duration="2000"
+         data-aos-delay="0">      <h2 class="text-xl font-bold text-blue-700 mb-2">Stay Organized</h2>
+      <p class="text-gray-600">Keep all your budgets in one simple, easy-to-use dashboard.</p>
+    </div>
+  </section>
+  <footer class="mt-20 bg-blue-600 text-white py-6 text-center">
+    <p>&copy; 2025 Budget Calculator. All Rights Reserved.</p>
+  </footer>
+
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  </script>
 </html>
