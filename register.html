@@ -30,7 +30,7 @@
         </div>
         <div>
             <label for="lastname" class="block text-gray-600 mb-1">last name</label>
-            <input type="text" id="firstname" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter last name" required>
+            <input type="text" id="lastname" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter last name" required>
         </div>    
         <div>
             <label for="email" class="block text-gray-600 mb-1">email</label>
@@ -43,7 +43,7 @@
         </div>
 
 
-      <button type="button" class="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition" onclick="Register()">Register</button>
+      <button type="button" class="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition" onclick="register()">Register</button>
     </form>
     <p class="mt-4 text-center text-sm text-gray-600">
         already have a account?
@@ -51,6 +51,24 @@
     </p>
 
     </div>
-    
+    <script>
+        function register(){
+            const userdetails={
+                first:firstname.value,
+                last:lastname.value,
+                email:email.value,
+                password:password.value
+            };
+            if(userdetails.first==""||userdetails.last==""||userdetails.email==""||userdetails.password==""){
+                alert("please fil all details")
+                return;
+            }
+            else{
+                localStorage.setItem("userdata",JSON.stringify(userdetails));
+                alert("Registration successfull")
+                window.location.href="login.html"
+            }
+        }
+    </script>
 </body>
 </html>

@@ -42,6 +42,24 @@
     </p>
 
     </div>
-    
+    <script>
+        function login(){
+            const emailin= document.getElementById("email").value;
+            const passwordin= document.getElementById("password").value;
+            const userdata=JSON.parse(localStorage.getItem("userdata"));
+            if(!userdata){
+                alert("account not exist,please register first");
+                window.location.href="register.html";
+                return;
+            }
+            if(emailin==userdata.email && passwordin==userdata.password){
+                alert("login successfull");
+                window.location.href="budget.html";
+            }
+            else{
+                alert("invalid credentials")
+            }           
+        }
+    </script>
 </body>
 </html>
