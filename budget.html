@@ -40,7 +40,18 @@
         </div>
         <div class="mb-4">
           <label class="block text-gray-600 mb-1">Description</label>
-          <input type="text" id="description" placeholder="Enter text" class="w-full border p-2 rounded mb-2">
+          <input type="text" id="description" placeholder="Enter description" class="w-full border p-2 rounded mb-2">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-600 mb-1">Expense Type (only for expenses)</label>
+          <select id="expenseType" class="w-full border p-2 rounded mb-2">
+            <option value="">-- Select Category --</option>
+            <option value="Rent">Rent</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other Expenses</option>
+          </select>
         </div>
         <div class="flex space-x-4">
           <button onclick="addIncome()" class="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700">Add Income</button>
@@ -66,7 +77,7 @@
     let totalIncome = parseFloat(localStorage.getItem("totalIncome")) || 0;
     let totalExpense = parseFloat(localStorage.getItem("totalExpense")) || 0;
 
-    document.getElementById("welcomeMsg").innerText = "Welcome, " + userData.first;
+    document.getElementById("welcomeMsg").innerText = "Welcome, " + userData.first + " 👋";
 
     function renderHistory() {
       const historyList = document.getElementById("history");
@@ -101,13 +112,14 @@
     function addExpense() {
       let amount = parseFloat(document.getElementById("amount").value);
       let desc = document.getElementById("description").value;
-      if (!amount || amount <= 0 || !desc) {
-        alert("Please enter valid amount and description.");
+      let category = document.getElementById("expenseType").value;
+      if (!amount || amount <= 0 || !desc || !category) {
+        alert("Please enter valid amount, description, and select category.");
         return;
       }
       balance -= amount;
       totalExpense += amount;
-      transactions.push({ type: "Expense", amount, desc });
+      transactions.push({ type: `Expense (${category})`, amount, desc });
       updateUI();
     }
 
@@ -120,6 +132,7 @@
       renderSummary();
       document.getElementById("amount").value = "";
       document.getElementById("description").value = "";
+      document.getElementById("expenseType").value = "";
     }
 
     function logout() {
