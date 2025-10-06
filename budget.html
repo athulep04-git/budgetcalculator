@@ -8,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('https://cdn.pixabay.com/photo/2017/02/18/17/03/light-background-2077664_1280.jpg');">
+
   <nav class="fixed top-0 left-0 w-full bg-blue-600 shadow-md px-8 py-4 flex justify-between items-center z-50">
     <div class="flex items-center space-x-2">
       <img src="https://www.pngmart.com/files/8/Wallet-PNG-Transparent-File.png" class="h-6">
@@ -19,15 +20,14 @@
   </nav>
 
   <div class="bg-white rounded-lg shadow-lg p-10 max-w-4xl mt-32 mx-auto border border-gray-100">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-bold text-blue-600">Smart Budget Dashboard</h2>
-    </div>
+    <h2 class="text-2xl font-bold text-blue-600 mb-2">Smart Budget Dashboard</h2>
     <h3 id="welcomeMsg" class="text-lg font-semibold mb-6"></h3>
 
     <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center mb-6">
       <h2 class="text-xl font-bold text-blue-700 mb-4">Summary</h2>
       <p class="text-lg text-green-700 font-semibold">Total Income: ₹<span id="totalIncome">0</span></p>
       <p class="text-lg text-red-700 font-semibold">Total Expense: ₹<span id="totalExpense">0</span></p>
+      <div id="categoryBreakdown" class="text-left mt-2 mb-2"></div>
       <p class="text-lg text-gray-800 font-bold">Balance: ₹<span id="balanceSummary">0</span></p>
     </div>
 
@@ -36,15 +36,15 @@
         <h2 class="text-xl font-semibold mb-4">Add Transaction</h2>
         <div class="mb-4">
           <label class="block text-gray-600 mb-1">Amount (₹)</label>
-          <input type="number" id="amount" placeholder="Enter amount" class="w-full border p-2 rounded mb-2">
+          <input type="number" id="amount" placeholder="Enter amount" class="w-full border p-2 rounded">
         </div>
         <div class="mb-4">
           <label class="block text-gray-600 mb-1">Description</label>
-          <input type="text" id="description" placeholder="Enter description" class="w-full border p-2 rounded mb-2">
+          <input type="text" id="description" placeholder="Enter description" class="w-full border p-2 rounded">
         </div>
         <div class="mb-4">
-          <label class="block text-gray-600 mb-1">Expense Type (only for expenses)</label>
-          <select id="expenseType" class="w-full border p-2 rounded mb-2">
+          <label class="block text-gray-600 mb-1">Expense Type (for expenses only)</label>
+          <select id="expenseType" class="w-full border p-2 rounded">
             <option value="">-- Select Category --</option>
             <option value="Rent">Rent</option>
             <option value="Groceries">Groceries</option>
@@ -71,21 +71,30 @@
       alert("Please log in first!");
       window.location.href = "login.html";
     }
+    document.getElementById("welcomeMsg").innerText = "Welcome, " + userData.first;
 
     let balance = parseFloat(localStorage.getItem("balance")) || 0;
     let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     let totalIncome = parseFloat(localStorage.getItem("totalIncome")) || 0;
     let totalExpense = parseFloat(localStorage.getItem("totalExpense")) || 0;
-
-    document.getElementById("welcomeMsg").innerText = "Welcome, " + userData.first + " 👋";
+    let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals")) || {
+      Rent: 0, Groceries: 0, Transportation: 0, Entertainment: 0, Other: 0
+    };
 
     function renderHistory() {
       const historyList = document.getElementById("history");
       historyList.innerHTML = "";
       transactions.forEach((tx) => {
         let li = document.createElement("li");
-        li.textContent = `${tx.type}: ₹${tx.amount} - ${tx.desc}`;
-        li.className = tx.type === "Income" ? "text-green-700" : "text-red-700";
+        if (tx.type === "Expense") {
+          li.innerHTML = `₹${tx.amount} - ${tx.desc} 
+                          <span class="text-gray-500 text-sm">(${tx.category}, ${tx.date})</span>`;
+          li.className = "text-red-700";
+        } else {
+          li.innerHTML = `₹${tx.amount} - ${tx.desc} 
+                          <span class="text-gray-500 text-sm">(${tx.date})</span>`;
+          li.className = "text-green-700";
+        }
         historyList.appendChild(li);
       });
     }
@@ -94,6 +103,13 @@
       document.getElementById("totalIncome").innerText = totalIncome;
       document.getElementById("totalExpense").innerText = totalExpense;
       document.getElementById("balanceSummary").innerText = balance;
+      let breakdownHTML = "";
+      for (let category in categoryTotals) {
+        if (categoryTotals[category] > 0) {
+          breakdownHTML += `<p class="text-sm text-red-700">${category}: ₹${categoryTotals[category]}</p>`;
+        }
+      }
+      document.getElementById("categoryBreakdown").innerHTML = breakdownHTML;
     }
 
     function addIncome() {
@@ -105,7 +121,7 @@
       }
       balance += amount;
       totalIncome += amount;
-      transactions.push({ type: "Income", amount, desc });
+      transactions.push({ type: "Income", amount, desc, date: new Date().toLocaleString() });
       updateUI();
     }
 
@@ -119,7 +135,8 @@
       }
       balance -= amount;
       totalExpense += amount;
-      transactions.push({ type: `Expense (${category})`, amount, desc });
+      categoryTotals[category] += amount;
+      transactions.push({ type: "Expense", category, amount, desc, date: new Date().toLocaleString() });
       updateUI();
     }
 
@@ -128,6 +145,7 @@
       localStorage.setItem("transactions", JSON.stringify(transactions));
       localStorage.setItem("totalIncome", totalIncome);
       localStorage.setItem("totalExpense", totalExpense);
+      localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
       renderHistory();
       renderSummary();
       document.getElementById("amount").value = "";
@@ -140,6 +158,7 @@
       localStorage.removeItem("transactions");
       localStorage.removeItem("totalIncome");
       localStorage.removeItem("totalExpense");
+      localStorage.removeItem("categoryTotals");
       alert("You have logged out!");
       window.location.href = "login.html";
     }
